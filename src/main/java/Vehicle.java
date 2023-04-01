@@ -2,6 +2,8 @@ public class Vehicle {
 
     public Vehicle(int InitialAltitude) {
         // initialize the altitude AND previous altitude to initialAltitude
+        Altitude = InitialAltitude;
+        PrevAltitude = InitialAltitude;
     }
 
     int Gravity = 100;
@@ -10,7 +12,7 @@ public class Vehicle {
     // Various end-of-game messages and status result codes.
     String dead = "\nCRASH!!\n\tThere were no survivors.\n\n";
     public static final int DEAD = -3;
-    String crashed = "\nThe Starship crashed. Good luck getting back home. Elon is pissed.\n\n";
+    String crashed = "\nThe Starship crashed. Good luck getting back home. Elon is pissed.\n\n"; //I mean, good
     public static final int CRASHED = -2;
     String emptyfuel = "\nThere is no fuel left. You're floating around like Major Tom.\n\n";
     public static final int EMPTYFUEL = -1;
@@ -45,16 +47,17 @@ public class Vehicle {
                 Flying = SUCCESS;
             }
         } else {
-            if (this.Altitude > 0) {
+            if (this.Altitude > 0 && this.Fuel < 1 ) {
                 s = emptyfuel;
                 Flying = EMPTYFUEL;
             } }
+
         return s;
     }
 
     public int computeDeltaV() {
         // return velocity + gravity - burn amount
-        return 0;
+        return Velocity + Gravity - Burn;
     }
 
     public void adjustForBurn(int burnAmount) {
@@ -63,21 +66,26 @@ public class Vehicle {
         // set new velocity to result of computeDeltaV function.
         // subtract speed from Altitude
         // subtract burn amount fuel used from tank
+        Burn = burnAmount;
+        PrevAltitude = Altitude;
+        Velocity = computeDeltaV();
+        Altitude -= Velocity;
+        Fuel -= burnAmount;
     }
 
     public boolean stillFlying() {
         // return true if altitude is positive
-        return false;
+        return Altitude > 0;
     }
     public boolean outOfFuel() {
         // return true if fuel is less than or equal to zero
-        return true;
+        return Fuel <= 0;
     }
 
     public DescentEvent getStatus(int tick) {
         // create a return a new DescentEvent object
         // filled in with the state of the vehicle.
-        return null;
+        return new DescentEvent(tick, Velocity, Fuel, Altitude, Flying); //what on gods red mars is st??? //i figured it out
     }
 
 }

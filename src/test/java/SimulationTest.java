@@ -19,7 +19,7 @@ public class SimulationTest {
 
     @Test
     public void runSimulationCrash() {
-        int[] burns = {0,0,0,0,0};
+        int[] burns = {200,200,200,200,200,200,200,200,200,100,100,100,100,190,101,100,100,100,100,100,100,100,100,100,};
         BurnStream burnSource = new BurnDataStream(burns);
         Simulation game = new Simulation(new Vehicle(5000));
         int okay = game.runSimulation(burnSource);
